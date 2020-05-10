@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\SegmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,11 +37,14 @@ class SegmentController extends AbstractController
      */
     public function getSegment($segmentId): JsonResponse
     {
-        $segment = null;
+        $segment = $this->segmentRepository->findOneBy([
+            'id' => $segmentId
+        ]);
 
         if ($segment) {
             return new JsonResponse([
-
+                'id' => $segment->getId(),
+                'name' => $segment->getName()
             ], Response::HTTP_OK);
         } else {
             return new JsonResponse([
@@ -56,9 +60,20 @@ class SegmentController extends AbstractController
      */
     public function create(Request $request): JsonResponse
     {
-        return new JsonResponse([
-            'message' => 'Segment - data created.'
-        ], Response::HTTP_CREATED);
+        $data = json_decode($request->getContent(), true);
+        $segmentName = $data['name'];
+
+        if (empty($segmentName)) {
+            return new JsonResponse([
+                'message' => 'Segment - name is missing.'
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $this->segmentRepository->saveSegment($segmentName);
+
+            return new JsonResponse([
+                'message' => 'Segment - data created.'
+            ], Response::HTTP_CREATED);
+        }
     }
 
     /**
@@ -69,9 +84,22 @@ class SegmentController extends AbstractController
      */
     public function update($segmentId, Request $request): JsonResponse
     {
-        return new JsonResponse([
+        $segment = $this->segmentRepository->findOneBy([
+            'id' => $segmentId
+        ]);
+        $data = json_decode($request->getContent(), true);
 
-        ], Response::HTTP_OK);
+        if (empty($data['name'])) {
+            return new JsonResponse([
+                'message' => 'Segment - name is missing.'
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $segment->setName($data['name']);
+            $updateSegment = $this->segmentRepository->updateSegment($segment);
+            return new JsonResponse([
+                $updateSegment->toArray()
+            ], Response::HTTP_OK);
+        }
     }
 
     /**
@@ -81,9 +109,12 @@ class SegmentController extends AbstractController
      */
     public function delete($segmentId): JsonResponse
     {
-        $segment = null;
+        $segment = $this->segmentRepository->findOneBy([
+            'id' => $segmentId
+        ]);
 
         if ($segment) {
+            $this->segmentRepository->removeSegment($segment);
             return new JsonResponse([
                 'message' => 'Segment - data removed.'
             ], Response::HTTP_NO_CONTENT);
@@ -100,7 +131,14 @@ class SegmentController extends AbstractController
      */
     public function getAll(): JsonResponse
     {
+        $segments = $this->segmentRepository->findAll();
         $data = [];
+        foreach ($segments as $segment) {
+            $data[] = [
+                'id' => $segment->getId(),
+                'name' => $segment->getName()
+            ];
+        }
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
