@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\RawClassRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RawClassController extends AbstractController
 {
+    /**
+     * @var RawClassRepository
+     */
+    private $rawClassRepository;
+
+    /**
+     * RawClassController constructor.
+     * @param RawClassRepository $rawClassRepository
+     */
+    public function __construct(RawClassRepository $rawClassRepository)
+    {
+        $this->rawClassRepository = $rawClassRepository;
+    }
+
     /**
      * @Route("/classes/{rawClassId}",name="get_rawclass",methods={"GET"})
      * @param $rawClassId

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SegmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SegmentController extends AbstractController
 {
+    /**
+     * @var SegmentRepository
+     */
+    private $segmentRepository;
+
+    /**
+     * SegmentController constructor.
+     * @param SegmentRepository $segmentRepository
+     */
+    public function __construct(SegmentRepository $segmentRepository)
+    {
+        $this->segmentRepository = $segmentRepository;
+    }
+
     /**
      * @Route("/segments/{segmentId}", name="get_segment", methods={"GET"})
      * @param $segmentId

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CommodityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommodityController extends AbstractController
 {
+    /**
+     * @var CommodityRepository
+     */
+    private $commodityRepository;
+
+    /**
+     * CommodityController constructor.
+     * @param CommodityRepository $commodityRepository
+     */
+    public function __construct(CommodityRepository $commodityRepository)
+    {
+        $this->commodityRepository = $commodityRepository;
+    }
+
     /**
      * @Route("/commodities/{commodityId}",name="commodity_get",methods={"GET"})
      * @param $commodityId

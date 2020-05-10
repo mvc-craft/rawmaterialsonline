@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\FamilyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FamilyController extends AbstractController
 {
+    /**
+     * @var FamilyRepository
+     */
+    private $familyRepository;
+
+    /**
+     * FamilyController constructor.
+     * @param FamilyRepository $familyRepository
+     */
+    public function __construct(FamilyRepository $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+    }
+
     /**
      * @Route("/families/{familyId}", methods={"GET"})
      * @param $familyId
