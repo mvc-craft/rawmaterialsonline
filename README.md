@@ -69,7 +69,9 @@ REST API
     	"family_id": "6"
     }
 >Notes: Commodity required existing ids from Segment, Raw Class (Class) and Family tables.
+
 #####DELETE: http://localhost:8000/commodities/1
+
 #####GET: http://localhost:8000/commodities
 
 
