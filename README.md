@@ -1,39 +1,54 @@
 # rawmaterialsonline
-REST API
 
-##1) Resource: /segments
-#####POST:	http://localhost:8000/segments
+Composer install
+```
+cd src
+composer install
+```
+
+Docker setup:
+```
+cd docker
+docker-compose up
+```
+
+# REST API
+
+## 1) Resource: /segments
+##### POST:	http://localhost:8000/segments
 	data:   {
 		"name": "First Segment"}
 	}
 	
-#####GET: http://localhost:8000/segments/1
+##### GET: http://localhost:8000/segments/1
 
-#####PUT: http://localhost:8000/segments/1
+##### PUT: http://localhost:8000/segments/1
 	data: {
 		"name": "First Updated Segment"
 	}
 
-#####DELETE: http://localhost:8000/segments/1
+##### DELETE: http://localhost:8000/segments/1
 
-#####GET: http://localhost:8000/segments
+##### GET: http://localhost:8000/segments
 
 
-##2) Resource: /families
+## 2) Resource: /families
 
-#####POST:	http://localhost:8000/families
+##### POST:	http://localhost:8000/families
 	data:   {
 		"name": "First Family"}
 	}
 
-#####GET: http://localhost:8000/families/1
+##### GET: http://localhost:8000/families/1
 
-#####PUT: http://localhost:8000/families/1
+##### PUT: http://localhost:8000/families/1
 	data: {
 		"name": "First Updated Family"
 	}
-#####DELETE: http://localhost:8000/families/1
-#####GET: http://localhost:8000/families
+
+##### DELETE: http://localhost:8000/families/1
+
+##### GET: http://localhost:8000/families
 
 ##3) Resource: /classes
 
