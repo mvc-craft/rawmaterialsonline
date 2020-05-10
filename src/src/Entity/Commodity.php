@@ -40,21 +40,45 @@ class Commodity
      */
     private $raw_class_id;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'segment' => $this->getSegmentId()->getName(),
+            'family' => $this->getFamilyId()->getName(),
+            'class' => $this->getRawClassId()->getName(),
+            'name' => $this->getName()
+        ];
     }
 
     public function getSegmentId(): ?Segment
