@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Segment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,53 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SegmentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    /**
+     * SegmentRepository constructor.
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $manager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Segment::class);
+        $this->manager = $manager;
+    }
+
+    /**
+     * @param $segmentName
+     */
+    public function saveSegment($segmentName)
+    {
+        $newSegment = new Segment();
+        $newSegment->setName($segmentName);
+        $this->manager->persist($newSegment);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Segment $segment
+     * @return Segment
+     */
+    public function updateSegment(Segment $segment)
+    {
+        $this->manager->persist($segment);
+        $this->manager->flush();
+        return $segment;
+    }
+
+    /**
+     * @param Segment $segment
+     * @return Segment
+     */
+    public function removeSegment(Segment $segment)
+    {
+        $this->manager->remove($segment);
+        $this->manager->flush();
+        return $segment;
     }
 
     // /**

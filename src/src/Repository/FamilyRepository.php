@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Family;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,53 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FamilyRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    /**
+     * FamilyRepository constructor.
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $manager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Family::class);
+        $this->manager = $manager;
+    }
+
+    /**
+     * @param $familyName
+     */
+    public function saveFamily($familyName)
+    {
+        $newFamily = new Family();
+        $newFamily->setName($familyName);
+        $this->manager->persist($newFamily);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Family $family
+     * @return Family
+     */
+    public function updateFamily(Family $family)
+    {
+        $this->manager->persist($family);
+        $this->manager->flush();
+        return $family;
+    }
+
+    /**
+     * @param Family $family
+     * @return Family
+     */
+    public function removeFamily(Family $family)
+    {
+        $this->manager->remove($family);
+        $this->manager->flush();
+        return $family;
     }
 
     // /**

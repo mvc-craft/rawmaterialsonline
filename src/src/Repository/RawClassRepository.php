@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\RawClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,53 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RawClassRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    /**
+     * RawClassRepository constructor.
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $manager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, RawClass::class);
+        $this->manager = $manager;
+    }
+
+    /**
+     * @param $rawClassName
+     */
+    public function saveRawClass($rawClassName)
+    {
+        $newRawClass = new RawClass();
+        $newRawClass->setName($rawClassName);
+        $this->manager->persist($newRawClass);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param RawClass $rawClass
+     * @return RawClass
+     */
+    public function updateRawClass(RawClass $rawClass)
+    {
+        $this->manager->persist($rawClass);
+        $this->manager->flush();
+        return $rawClass;
+    }
+
+    /**
+     * @param RawClass $rawClass
+     * @return RawClass
+     */
+    public function removeRawClass(RawClass $rawClass)
+    {
+        $this->manager->remove($rawClass);
+        $this->manager->flush();
+        return $rawClass;
     }
 
     // /**

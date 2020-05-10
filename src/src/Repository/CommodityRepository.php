@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Commodity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,59 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommodityRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    /**
+     * CommodityRepository constructor.
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $manager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Commodity::class);
+        $this->manager = $manager;
+    }
+
+    /**
+     * @param $segment
+     * @param $family
+     * @param $rawClass
+     * @param $commodityName
+     */
+    public function saveCommodity($segment,$family,$rawClass,$commodityName)
+    {
+        $newCommodity = new Commodity();
+        $newCommodity->setSegmentId($segment);
+        $newCommodity->setFamilyId($family);
+        $newCommodity->setRawClassId($rawClass);
+        $newCommodity->setName($commodityName);
+        $this->manager->persist($newCommodity);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Commodity $commodity
+     * @return Commodity
+     */
+    public function updateCommodity(Commodity $commodity)
+    {
+        $this->manager->persist($commodity);
+        $this->manager->flush();
+        return $commodity;
+    }
+
+    /**
+     * @param Commodity $commodity
+     * @return Commodity
+     */
+    public function removeCommodity(Commodity $commodity)
+    {
+        $this->manager->remove($commodity);
+        $this->manager->flush();
+        return $commodity;
     }
 
     // /**
