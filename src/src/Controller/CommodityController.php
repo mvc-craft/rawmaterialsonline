@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class CommodityController
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CommodityController extends AbstractController
 {
     /**
+     * @Route("/commodities/{commodityId}",name="commodity_get",methods={"GET"})
      * @param $commodityId
      * @return JsonResponse
      */
@@ -33,6 +35,7 @@ class CommodityController extends AbstractController
     }
 
     /**
+     * @Route("/commodities",name="commodity_create", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -44,6 +47,7 @@ class CommodityController extends AbstractController
     }
 
     /**
+     * @Route("/commodities/{commodityId}",name="commodity_update",methods={"PUT"})
      * @param $commodityId
      * @param Request $request
      * @return JsonResponse
@@ -56,6 +60,7 @@ class CommodityController extends AbstractController
     }
 
     /**
+     * @Route("/commodities/{commodityId}",name="commodity_remove",methods={"DELETE"})
      * @param $commodityId
      * @return JsonResponse
      */
@@ -75,6 +80,7 @@ class CommodityController extends AbstractController
     }
 
     /**
+     * @Route("/commodities",name="getall_commodities",methods={"GET"})
      * @return JsonResponse
      */
     public function getAll(): JsonResponse

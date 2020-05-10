@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class RawClassController
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RawClassController extends AbstractController
 {
     /**
+     * @Route("/classes/{rawClassId}",name="get_rawclass",methods={"GET"})
      * @param $rawClassId
      * @return JsonResponse
      */
@@ -33,6 +35,7 @@ class RawClassController extends AbstractController
     }
 
     /**
+     * @Route("/classes",name="create_rawclass",methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -44,6 +47,7 @@ class RawClassController extends AbstractController
     }
 
     /**
+     * @Route("/classes/{rawClassId}",name="update_rawclass",methods={"PUT"})
      * @param $rawClassId
      * @param Request $request
      * @return JsonResponse
@@ -56,6 +60,7 @@ class RawClassController extends AbstractController
     }
 
     /**
+     * @Route("/classes/{rawClassId}",name="remove_rawclass",methods={"DELETE"})
      * @param $rawClassId
      * @return JsonResponse
      */
@@ -75,6 +80,7 @@ class RawClassController extends AbstractController
     }
 
     /**
+     * @Route("/classes",name="getall_rawclasses",methods={"GET"})
      * @return JsonResponse
      */
     public function getAll(): JsonResponse

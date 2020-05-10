@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SegmentController
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SegmentController extends AbstractController
 {
     /**
+     * @Route("/segments/{segmentId}", name="get_segment", methods={"GET"})
      * @param $segmentId
      * @return JsonResponse
      */
@@ -33,6 +35,7 @@ class SegmentController extends AbstractController
     }
 
     /**
+     * @Route("/segments", name="create_segment", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -44,6 +47,7 @@ class SegmentController extends AbstractController
     }
 
     /**
+     * @Route("/segments/{segmentId}", name="update_segment", methods={"PUT"})
      * @param $segmentId
      * @param Request $request
      * @return JsonResponse
@@ -56,6 +60,7 @@ class SegmentController extends AbstractController
     }
 
     /**
+     * @Route("/segments/{segmentId}", name="delete_segment", methods={"DELETE"})
      * @param $segmentId
      * @return JsonResponse
      */
@@ -75,6 +80,7 @@ class SegmentController extends AbstractController
     }
 
     /**
+     * @Route("/segments", name="getall_segment",methods={"GET"})
      * @return JsonResponse
      */
     public function getAll(): JsonResponse

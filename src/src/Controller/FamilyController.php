@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class FamilyController
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class FamilyController extends AbstractController
 {
     /**
+     * @Route("/families/{familyId}", methods={"GET"})
      * @param $familyId
      * @return JsonResponse
      */
@@ -33,6 +35,7 @@ class FamilyController extends AbstractController
     }
 
     /**
+     * @Route("/families", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -44,6 +47,7 @@ class FamilyController extends AbstractController
     }
 
     /**
+     * @Route("/families/{familyId}", methods={"PUT"})
      * @param $familyId
      * @param Request $request
      * @return JsonResponse
@@ -56,6 +60,7 @@ class FamilyController extends AbstractController
     }
 
     /**
+     * @Route("/families/{familyId}", methods={"DELETE"})
      * @param $familyId
      * @return JsonResponse
      */
