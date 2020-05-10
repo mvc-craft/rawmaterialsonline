@@ -36,11 +36,14 @@ class FamilyController extends AbstractController
      */
     public function getFamily($familyId): JsonResponse
     {
-        $family = null;
+        $family = $this->familyRepository->findOneBy([
+            'id' => $familyId
+        ]);
 
         if ($family) {
             return new JsonResponse([
-
+                'id' => $family->getId(),
+                'name' => $family->getName()
             ], Response::HTTP_OK);
         } else {
             return new JsonResponse([
@@ -56,9 +59,20 @@ class FamilyController extends AbstractController
      */
     public function create(Request $request): JsonResponse
     {
-        return new JsonResponse([
-            'message' => 'Family - data created.'
-        ], Response::HTTP_CREATED);
+        $data = json_decode($request->getContent(), true);
+        $familyName = $data['name'];
+
+        if (empty($familyName)) {
+            return new JsonResponse([
+                'message' => 'Family - name is missing.'
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $this->familyRepository->saveFamily($familyName);
+
+            return new JsonResponse([
+                'message' => 'Family - data created.'
+            ], Response::HTTP_CREATED);
+        }
     }
 
     /**
@@ -69,9 +83,23 @@ class FamilyController extends AbstractController
      */
     public function update($familyId, Request $request): JsonResponse
     {
-        return new JsonResponse([
+        $family = $this->familyRepository->findOneBy([
+            'id' => $familyId
+        ]);
+        $data = json_decode($request->getContent(), true);
 
-        ], Response::HTTP_OK);
+        if (empty($data['name'])) {
+            return new JsonResponse([
+                'message' => 'Family - name is missing.'
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $family->setName($data['name']);
+            $updateFamily = $this->familyRepository->updateFamily($family);
+
+            return new JsonResponse([
+                $updateFamily->toArray()
+            ], Response::HTTP_OK);
+        }
     }
 
     /**
@@ -81,9 +109,13 @@ class FamilyController extends AbstractController
      */
     public function delete($familyId): JsonResponse
     {
-        $family = null;
+        $family = $this->familyRepository->findOneBy([
+            'id' => $familyId
+        ]);
 
         if ($family) {
+            $this->familyRepository->removeFamily($family);
+
             return new JsonResponse([
                 'message' => 'Family - data removed.'
             ], Response::HTTP_NO_CONTENT);
@@ -95,11 +127,20 @@ class FamilyController extends AbstractController
     }
 
     /**
+     * @Route("/families", name="getall_families",methods={"GET"})
      * @return JsonResponse
      */
     public function getAll(): JsonResponse
     {
+        $families = $this->familyRepository->findAll();
         $data = [];
+
+        foreach ($families as $family) {
+            $data[] = [
+                'id' => $family->getId(),
+                'name' => $family->getName()
+            ];
+        }
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
