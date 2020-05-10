@@ -36,11 +36,14 @@ class RawClassController extends AbstractController
      */
     public function getRawClass($rawClassId): JsonResponse
     {
-        $rawClass = null;
+        $rawClass = $this->rawClassRepository->findOneBy([
+            'id' => $rawClassId
+        ]);
 
         if ($rawClass) {
             return new JsonResponse([
-
+                'id' => $rawClass->getId(),
+                'name' => $rawClass->getName()
             ], Response::HTTP_OK);
         } else {
             return new JsonResponse([
@@ -56,9 +59,19 @@ class RawClassController extends AbstractController
      */
     public function create(Request $request): JsonResponse
     {
-        return new JsonResponse([
-            'message' => 'RawClass - data created.'
-        ], Response::HTTP_CREATED);
+        $data = json_decode($request->getContent(), true);
+        $rawClassName = $data['name'];
+
+        if (empty($rawClassName)) {
+            return new JsonResponse([
+                'message' => 'Raw Class - name is missing.'
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $this->rawClassRepository->saveRawClass($rawClassName);
+            return new JsonResponse([
+                'message' => 'RawClass - data created.'
+            ], Response::HTTP_CREATED);
+        }
     }
 
     /**
@@ -69,9 +82,23 @@ class RawClassController extends AbstractController
      */
     public function update($rawClassId, Request $request): JsonResponse
     {
-        return new JsonResponse([
+        $rawClass = $this->rawClassRepository->findOneBy([
+            'id' => $rawClassId
+        ]);
+        $data = json_decode($request->getContent(), true);
 
-        ], Response::HTTP_OK);
+        if (empty($data['name'])) {
+            return new JsonResponse([
+                'message' => 'Raw Class - name is missing.'
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $rawClass->setName($data['name']);
+            $this->rawClassRepository->updateRawClass($rawClass);
+
+            return new JsonResponse([
+                $rawClass->toArray()
+            ], Response::HTTP_OK);
+        }
     }
 
     /**
@@ -81,9 +108,13 @@ class RawClassController extends AbstractController
      */
     public function delete($rawClassId): JsonResponse
     {
-        $rawClass = null;
+        $rawClass = $this->rawClassRepository->findOneBy([
+            'id' => $rawClassId
+        ]);
 
         if ($rawClass) {
+            $this->rawClassRepository->removeRawClass($rawClass);
+
             return new JsonResponse([
                 'message' => 'RawClass - data removed.'
             ], Response::HTTP_NO_CONTENT);
@@ -100,7 +131,15 @@ class RawClassController extends AbstractController
      */
     public function getAll(): JsonResponse
     {
+        $rawClasses = $this->rawClassRepository->findAll();
         $data = [];
+
+        foreach ($rawClasses as $rawClass) {
+            $data[] = [
+                'id' => $rawClass->getId(),
+                'name' => $rawClass->getName()
+            ];
+        }
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
