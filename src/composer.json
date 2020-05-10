@@ -17,7 +17,8 @@
         "symfony/yaml": "5.0.*"
     },
     "require-dev": {
-        "sensiolabs/security-checker": "^6.0"
+        "sensiolabs/security-checker": "^6.0",
+        "symfony/maker-bundle": "^1.17"
     },
     "config": {
         "preferred-install": {
