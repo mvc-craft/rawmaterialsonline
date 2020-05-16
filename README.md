@@ -50,33 +50,33 @@ docker-compose up
 
 ##### GET: http://localhost:8000/families
 
-##3) Resource: /classes
+## 3) Resource: /classes
 
-#####POST:	http://localhost:8000/classes
+##### POST:	http://localhost:8000/classes
 	data:   {
 		"name": "First Raw Class"}
 	}
-#####GET: http://localhost:8000/classes/1
+##### GET: http://localhost:8000/classes/1
 
-#####PUT: http://localhost:8000/classes/1
+##### PUT: http://localhost:8000/classes/1
 	data: {
 		"name": "First Updated Raw Class"
 	}
 
-#####DELETE: http://localhost:8000/classes/1
-#####GET: http://localhost:8000/classes
+##### DELETE: http://localhost:8000/classes/1
+##### GET: http://localhost:8000/classes
 
 
-##4) Resource: /commodities
+## 4) Resource: /commodities
 
-#####POST:	http://localhost:8000/commodities
+##### POST:	http://localhost:8000/commodities
 	data:   {
 		"name": "First Commodity"}
 	}
 
-#####GET: http://localhost:8000/commodities/1
+##### GET: http://localhost:8000/commodities/1
 
-#####PUT: http://localhost:8000/commodities/1
+##### PUT: http://localhost:8000/commodities/1
 	data:   {
     	"name": "Fourth Commodity",
     	"segment_id": "2",
@@ -85,9 +85,9 @@ docker-compose up
     }
 >Notes: Commodity required existing ids from Segment, Raw Class (Class) and Family tables.
 
-#####DELETE: http://localhost:8000/commodities/1
+##### DELETE: http://localhost:8000/commodities/1
 
-#####GET: http://localhost:8000/commodities
+##### GET: http://localhost:8000/commodities
 
 
 
